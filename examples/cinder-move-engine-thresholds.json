@@ -1,0 +1,17 @@
+{
+  "repo": "cinder-move-engine-stack",
+  "thresholds": {
+    "signal": 3,
+    "slack": 2,
+    "confidence": 2,
+    "drag": 3,
+    "ship": 171,
+    "watch": 110
+  },
+  "terms": [
+    "position pressure",
+    "move ordering",
+    "search width",
+    "endgame risk"
+  ]
+}
