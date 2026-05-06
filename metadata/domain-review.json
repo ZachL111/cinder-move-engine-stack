@@ -1,0 +1,73 @@
+{
+  "repo": "cinder-move-engine-stack",
+  "language": "Elixir",
+  "category": "Chess and game engines",
+  "goal": "Build an Elixir toolkit that studies engine behavior through fixture event logs, with golden state snapshots and explicit failure cases.",
+  "review_model": {
+    "terms": [
+      "position pressure",
+      "move ordering",
+      "search width",
+      "endgame risk"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "position pressure",
+      "signal": 47,
+      "slack": 21,
+      "drag": 12,
+      "confidence": 73,
+      "score": 152,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "move ordering",
+      "signal": 54,
+      "slack": 24,
+      "drag": 15,
+      "confidence": 89,
+      "score": 176,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "search width",
+      "signal": 67,
+      "slack": 35,
+      "drag": 19,
+      "confidence": 56,
+      "score": 168,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "endgame risk",
+      "signal": 82,
+      "slack": 45,
+      "drag": 13,
+      "confidence": 85,
+      "score": 255,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "position pressure",
+      "signal": 56,
+      "slack": 23,
+      "drag": 32,
+      "confidence": 55,
+      "score": 94,
+      "lane": "hold"
+    }
+  ]
+}

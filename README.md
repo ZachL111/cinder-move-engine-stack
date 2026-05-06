@@ -1,68 +1,40 @@
 # cinder-move-engine-stack
 
-`cinder-move-engine-stack` packages a practical chess and game engines exercise in Elixir. The emphasis is on deterministic behavior, a small public API, and examples that explain the tradeoffs.
+`cinder-move-engine-stack` is a Elixir project in chess and game engines. Its focus is to build an Elixir toolkit that studies engine behavior through fixture event logs, with golden state snapshots and explicit failure cases.
 
-## How I Read Cinder Move Engine Stack
+## Purpose
 
-The useful thing to inspect here is how the same score rule is represented in code, metadata, and examples. If those three pieces disagree, the audit script should make the drift visible.
+I want this repository to be useful as a quick reading exercise: fixtures first, implementation second, verifier last.
 
-## Problem Shape
+## Cinder Move Engine Stack Review Notes
 
-The goal is to capture the core behavior in code and make the surrounding assumptions obvious. A reader should be able to run the verifier, open the fixtures, and understand why each decision was made.
+`recovery` and `stale` are the cases worth reading first. They show the optimistic and cautious ends of the fixture.
 
-## Repository Map
+## What Is Covered
 
-- `lib`: library code
-- `test`: language test directory
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
+- `fixtures/domain_review.csv` adds cases for position pressure and move ordering.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/cinder-move-engine-walkthrough.md` walks through the case spread.
+- The Elixir code includes a review path for `endgame risk` and `position pressure`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Main Behaviors
+## Implementation Notes
 
-- Includes extended examples for turn flow, including `recovery` and `degraded`.
-- Documents search limits tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## Internal Model
+The Elixir code keeps the review rule close to the tests.
 
-The project is organized around a compact model rather than a large framework. Inputs are scored, classified, and checked against golden fixtures. The constants live in code and are mirrored in metadata so documentation drift is easy to catch. The Elixir project uses Mix and ExUnit with clear data maps for each scenario.
-
-## Run It Locally
-
-Use a normal shell with Elixir available on `PATH`. The verifier is written as a PowerShell script because the portfolio was assembled on Windows.
-
-## Scenario Walkthrough
-
-The examples are meant to be readable before they are exhaustive. They cover enough variation to show how latency and risk can pull a decision below the threshold.
-
-## How To Run It
+## Command
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Audit Path
 
-## Validation
+The same command runs the local verification path. The highest-scoring domain case is `recovery` at 255, which lands in `ship`. The most cautious case is `stale` at 94, which lands in `hold`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Limits
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Follow-Up Work
-
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add one more chess and game engines fixture that focuses on a malformed or borderline input.
-
-## Known Edges
-
-The fixture set is deliberately small. That keeps the review surface clear, but it also means the model should not be treated as a complete domain simulator.
+The repository is intentionally scoped to local checks. I would expand it by adding adversarial fixtures before adding features.
